@@ -1,0 +1,50 @@
+# =============================================================================
+# PanelCleaner – Docker Compose
+# =============================================================================
+# CPU profile (default):   docker compose up
+# GPU profile:             docker compose --profile gpu up
+# =============================================================================
+
+services:
+  # ── CPU service (default) ─────────────────────────────────────────────────
+  panelcleaner-cpu:
+    profile: ["cpu"]
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+      target: base
+    container_name: panelcleaner-cpu
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./temp_chapters:/app/temp_chapters
+      - ./pcleaner/profiles:/app/pcleaner/profiles
+    restart: unless-stopped
+
+  # ── GPU service (explicit --profile gpu) ──────────────────────────────────
+  panelcleaner-gpu:
+    profile: ["gpu"]
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+      target: gpu
+    container_name: panelcleaner-gpu
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./temp_chapters:/app/temp_chapters
+      - ./pcleaner/profiles:/app/pcleaner/profiles
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped

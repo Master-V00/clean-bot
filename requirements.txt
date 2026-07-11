@@ -1,0 +1,92 @@
+# ==============================================================================
+# PanelCleaner – requirements.txt (extras-based install)
+# ==============================================================================
+# This file is maintained for convenience. Prefer installing via pyproject.toml:
+#
+#   CPU-only CLI:        pip install pcleaner[core]
+#   CLI + GUI:           pip install pcleaner[gui]
+#   CLI + GUI + GPU:     pip install pcleaner[gui,gpu]
+#   CLI + Server:        pip install pcleaner[server]
+#   Full (no paddle):    pip install pcleaner[full]
+#   Everything:          pip install pcleaner[all]
+#
+# For development, install from the repo root:
+#   pip install -e ".[gui,gpu,ocr,server,inpaint]"
+# ==============================================================================
+
+# ── Core (always installed) ──────────────────────────────────────────────────
+# Image processing
+opencv-python>=4.11.0,<5
+numpy>=2.4.6,<3
+pillow>=12.2.0,<13
+scipy>=1.17.1,<2
+shapely>=2.1.2,<3
+pyclipper>=1.3.0.post5,<2
+psd-tools>=1.11.0,<2
+tifffile>=2024.9.0,<2025
+# CLI & utilities
+natsort>=8.4.0,<9
+tqdm>=4.67.0,<5
+loguru>=0.7.3,<1
+prettytable>=3.12.0,<4
+colorama>=0.4.6,<1
+requests>=2.32.0,<3
+xdg>=6.0.0,<7
+attrs>=24.0.0,<26
+psutil>=6.1.0,<7
+dictdiffer>=0.9.0,<1
+humanfriendly>=10.0,<12
+packaging>=25.0,<26
+pyyaml>=6.0.2,<7
+regex>=2024.11.0,<2026
+filelock>=3.16.0,<4
+docopt-ng>=0.9.0,<1
+configupdater>=3.2.0,<4
+importlib-metadata>=8.0.0; python_version<'3.12'
+strenum>=0.4.15; python_version<'3.11'
+pywin32>=310; platform_system=='Windows'
+win10toast>=0.9; platform_system=='Windows'
+pyuac>=0.0.2; platform_system=='Windows'
+
+# ── GUI ──────────────────────────────────────────────────────────────────────
+PySide6>=6.11.1
+
+# ── Server / API ─────────────────────────────────────────────────────────────
+fastapi>=0.137.1
+uvicorn[standard]>=0.49.0
+pydantic>=2.10.0
+pydantic-settings>=2.14.1
+supabase>=2.9.0
+google-auth-oauthlib>=1.2.0
+google-api-python-client>=2.150.0
+python-dotenv>=1.1.0
+redis>=5.2.0
+httpx>=0.28.0
+aiofiles>=24.1.0
+python-multipart>=0.0.18
+
+# ── OCR ──────────────────────────────────────────────────────────────────────
+manga-ocr>=0.1.11
+pytesseract>=0.3.10
+fugashi>=1.5.2
+jaconv>=0.3.4
+unidic-lite>=1.0.8
+transformers>=4.47.0
+huggingface-hub>=0.27.0
+safetensors>=0.5.0
+tokenizers>=0.21.0
+
+# ── OCR advanced (optional) ──────────────────────────────────────────────────
+easyocr>=1.7.1
+
+# ── PaddlePaddle (completely optional) ───────────────────────────────────────
+# paddleocr>=3.7.0
+# paddlepaddle>=3.3.1
+
+# ── GPU (torch) ──────────────────────────────────────────────────────────────
+# Install with CUDA support:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+# torch>=2.12.0
+# torchvision>=0.22.0
+
+# ── Inpainting ───────────────────────────────────────────────────────────────
