@@ -1,0 +1,140 @@
+
+cd PanelCleaner-CUDA-build-masterV
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+export HF_TOKEN="YOUR_HF_TOKEN_HERE"
+pip install "pcleaner[full]"
+pip install -e .
+pip install dotenv
+pip install transformers>=4.45.0 safetensors
+python3 launch.py
+
+
+http://localhost:10100
+
+uvicorn main:app --host 0.0.0.0 --port 10100 --reload
+
+cd /workspace/PanelCleaner-CUDA-build-masterV/discord-bot && npm i && node index.js
+
+fuser -k 10100/tcp
+
+
+
+
+
+pip uninstall torch torchvision -y
+pip install torch==2.10.0+cu124 torchvision==0.22.0+cu124 --index-url https://download.pytorch.org/whl/cu130
+
+pip install -e .
+
+pip install dotenv
+
+pip install transformers>=4.45.0 safetensors
+
+export HF_TOKEN="YOUR_HF_TOKEN_HERE"
+
+pip install easyocr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+python3 launch.py
+
+export API_PORT=10100 && python3 main.py
+export API_HOST=0.0.0.0 && export API_PORT=10100 && python3 main.py
+
+export API_HOST=0.0.0.0 && export API_PORT=8080 && python3 main.py
+
+curl ifconfig.me
+
+fuser -k 10100/tcp
+
+http://localhost:10100
+
+uvicorn main:app --host 0.0.0.0 --port 10100 --reload
+
+
+
+F) Final Install / Run Commands
+CPU install (CLI only):
+
+pip install pcleaner
+
+
+
+CPU install with GUI:
+
+pip install "pcleaner[gui]"
+
+
+
+
+
+CPU install with Server:
+
+pip install "pcleaner[server,ocr,inpaint]"
+
+
+
+
+GPU install (CUDA support):
+
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+
+pip install "pcleaner[gui,gpu,ocr,inpaint]"
+
+
+
+
+Full install (all features, no Paddle):
+
+pip install "pcleaner[full]"
+
+
+
+Docker CPU:
+
+docker build -f Dockerfile.server -t panelcleaner-server:cpu .
+
+docker run -p 8000:8000 --env-file .env panelcleaner-server:cpu
+
+
+
+
+Docker GPU:
+
+docker build --target=gpu -f Dockerfile.server -t panelcleaner-server:gpu .
+
+docker run --gpus all -p 8000:8000 --env-file .env panelcleaner-server:gpu
+
+
+
+
+Development install:
+
+pip install -e ".[gui,gpu,ocr,server,inpaint]"
+
+
+
+Run (CLI):
+
+pcleaner clean /path/to/images
+
+
+Run (Server):
+
+uvicorn server.api:app --host 0.0.0.0 --port 8000

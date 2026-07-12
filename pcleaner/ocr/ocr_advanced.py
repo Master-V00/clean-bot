@@ -83,8 +83,13 @@ class DynamicEasyOcrEngine:
     - No fallback to user home directories or HuggingFace cache
     """
     
-    def __init__(self):
-        """Initialize EasyOCR with comprehensive multi-language support."""
+    def __init__(self, languages=None):
+        """Initialize EasyOCR with multi-language support.
+        
+        :param languages: List of language codes. Defaults to ['ja', 'en'] for manga.
+            Note: ch_sim is only compatible with en. If you need Chinese, 
+            create a separate engine with languages=['ch_sim', 'en'].
+        """
         try:
             import easyocr
         except ImportError:
@@ -97,9 +102,10 @@ class DynamicEasyOcrEngine:
         logger.info("🔧 Deploying EasyOCR Sandbox with Global Auto-Language Multi-Array")
         logger.info(f"📁 Model Storage: {INTERNAL_OCR_DIR}")
         
-        # Initialize with comprehensive language support
-        # These cover most manga/comic text scenarios
-        languages = ['en', 'ar', 'ko', 'ch_sim', 'ja']
+        # Default to Japanese + English for manga. 
+        # ch_sim must NOT be mixed with ja/ko — it's only compatible with en.
+        if languages is None:
+            languages = ['ja', 'en']
         
         # Use globally-cached GPU availability (detected at startup in main())
         gpu_available = hp.detect_gpu_availability()
@@ -111,6 +117,7 @@ class DynamicEasyOcrEngine:
             model_storage_directory=str(INTERNAL_OCR_DIR),
             user_network_directory=str(INTERNAL_OCR_DIR)
         )
+        self.languages = languages
         logger.info(f"✅ EasyOCR initialized with languages: {languages}")
 
     

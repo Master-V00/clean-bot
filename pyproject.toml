@@ -65,11 +65,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# ── GUI ──────────────────────────────────────────────────────────────────────
-gui = [
-    "PySide6>=6.11.1",
-]
-
 # ── Server / API ─────────────────────────────────────────────────────────────
 server = [
     "fastapi>=0.137.1",
@@ -122,18 +117,17 @@ inpaint = [
 
 # ── All-in-one (everything except paddle) ────────────────────────────────────
 full = [
-    "pcleaner[gui,server,ocr,ocr-extra,gpu,inpaint]",
+    "pcleaner[server,ocr,ocr-extra,gpu,inpaint]",
 ]
 
 # ── Everything including paddle ──────────────────────────────────────────────
 all = [
-    "pcleaner[gui,server,ocr,ocr-extra,gpu,inpaint,paddle]",
+    "pcleaner[server,ocr,ocr-extra,gpu,inpaint,paddle]",
 ]
 
 [project.scripts]
 pcleaner = "pcleaner.main:main"
 pcleaner-cli = "pcleaner.main:main"
-pcleaner-gui = "pcleaner.gui.launcher:main"
 
 [project.urls]
 Homepage = "https://github.com/VoxelCubes/PanelCleaner"

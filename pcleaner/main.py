@@ -524,15 +524,31 @@ def run_cleaner(
                 )
 
         ocr_analytics: list[st.OCRAnalytic] = []
-        for json_file_path in tqdm(list(cache_dir.glob("*.json"))):
-            ocr_analytics_of_a_page = pp.prep_json_file(
-                json_file_path,
-                preprocessor_conf=profile.preprocessor,
-                cache_masks=cache_masks,
-                ocr_engine_factory=ocr_engine_factory,
-            )
-            if ocr_analytics_of_a_page is not None:
-                ocr_analytics.append(ocr_analytics_of_a_page)
+        import concurrent.futures
+        json_files = list(cache_dir.glob("*.json"))
+        max_workers = min(len(json_files), os.cpu_count() or 4, 8)
+        if max_workers <= 1 or len(json_files) <= 2:
+            for json_file_path in tqdm(json_files):
+                ocr_analytics_of_a_page = pp.prep_json_file(
+                    json_file_path,
+                    preprocessor_conf=profile.preprocessor,
+                    cache_masks=cache_masks,
+                    ocr_engine_factory=ocr_engine_factory,
+                )
+                if ocr_analytics_of_a_page is not None:
+                    ocr_analytics.append(ocr_analytics_of_a_page)
+        else:
+            def _prep_one(jfp):
+                return pp.prep_json_file(
+                    jfp,
+                    preprocessor_conf=profile.preprocessor,
+                    cache_masks=cache_masks,
+                    ocr_engine_factory=ocr_engine_factory,
+                )
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
+                for result in tqdm(pool.map(_prep_one, json_files), total=len(json_files)):
+                    if result is not None:
+                        ocr_analytics.append(result)
 
         if ocr_analytics and not hide_analytics:
             print(

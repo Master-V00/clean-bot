@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+credentials/
+logs/
+pcleaner/models/
+pcleaner/temp_chapters/
+*.egg-info/
+dist/
+build/
