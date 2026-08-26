@@ -203,13 +203,26 @@ async function notifyUser(client, req) {
         if (botMember) {
           const permissions = channel.permissionsFor(botMember);
           if (permissions && permissions.has(PermissionsBitField.Flags.SendMessages)) {
-            await channel.send({
-              content: mention,
-              embeds: [embed],
-              allowedMentions: { users: [req.discord_user_id] },
-            });
-            log("info", `Notified user ${req.discord_user_id} in channel ${req.channel_id} about request ${req.id} (${req.status})`);
-            delivered = true;
+            try {
+              await channel.send({
+                content: mention,
+                embeds: [embed],
+                allowedMentions: { users: [req.discord_user_id] },
+              });
+              log("info", `Notified user ${req.discord_user_id} in channel ${req.channel_id} about request ${req.id} (${req.status})`);
+              delivered = true;
+            } catch (embedErr) {
+              // Fallback: send as plain text if embed fails (e.g. missing Embed Links permission)
+              log("warn", `Embed send failed, trying plain text: ${embedErr.message}`);
+              const fallbackText = req.status === "completed"
+                ? `${mention}\n✅ **Processing Complete!**\nRequest \`${req.id}\` — [Download](${req.output_url})`
+                : `${mention}\n❌ **Processing Failed**\nRequest \`${req.id}\`\nError: \`\`\`${req.error_message || "Unknown error."}\`\`\``;
+              await channel.send({
+                content: fallbackText,
+                allowedMentions: { users: [req.discord_user_id] },
+              });
+              delivered = true;
+            }
           }
         }
       }

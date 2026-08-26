@@ -4,8 +4,10 @@ __pycache__/
 .env
 credentials/
 logs/
-pcleaner/models/
-pcleaner/temp_chapters/
+temp_chapters/
+app/cache/
+app/cache/cleaner/
+app/models/
 *.egg-info/
 dist/
 build/

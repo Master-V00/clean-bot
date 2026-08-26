@@ -11,10 +11,14 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from loguru import logger
 
-from server.config import settings
-from server.api import app as api_app
-from server.worker import worker
-from pcleaner.runtime.device import startup_banner as _device_banner
+from app.server_config import settings
+from app.api.main import app as api_app
+from app.workers.task_worker import worker
+from app.utils.device import startup_banner as _device_banner
+
+# Redirect torch.hub downloads to project models dir (not system cache)
+_models_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app", "models")
+os.environ["TORCH_HOME"] = _models_dir
 
 
 # Suppress uvicorn access logs (the HTTP 404 GET /portal-resolver spam)
@@ -47,6 +51,26 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("PanelCleaner Server Starting...")
     logger.info(_device_banner())
+
+    # GPU capability benchmark
+    try:
+        import torch
+        if torch.cuda.is_available():
+            gpu_name = torch.cuda.get_device_name(0)
+            gpu_mem = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            capability = torch.cuda.get_device_capability()
+            logger.info(f"GPU: {gpu_name} | VRAM: {gpu_mem:.1f}GB | Compute: {capability[0]}.{capability[1]}")
+
+            if gpu_mem >= 8:
+                logger.info("GPU Power: HIGH — concurrent_models=8 recommended")
+            elif gpu_mem >= 4:
+                logger.info("GPU Power: MEDIUM — concurrent_models=4 recommended")
+            else:
+                logger.info("GPU Power: LOW — concurrent_models=2 recommended")
+        else:
+            logger.warning("No CUDA GPU detected — running on CPU (significantly slower)")
+    except Exception as e:
+        logger.debug(f"GPU detection skipped: {e}")
 
     logger.debug("Listing all registered routes:")
     for route in app.routes:
@@ -87,7 +111,7 @@ async def lifespan(app: FastAPI):
 
 async def _run_cleanup_loop(interval_seconds: int, expiration_minutes: int):
     """Run the cleanup scheduler as a periodic background task."""
-    from server.cleanup import CleanupScheduler
+    from app.services.cleanup import CleanupScheduler
     scheduler = CleanupScheduler(interval_seconds, expiration_minutes)
     while True:
         scheduler.cleanup_expired_outputs()

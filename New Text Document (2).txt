@@ -1,0 +1,12 @@
+cd /workspace/Clean\ bot
+kill $(cat api.pid) $(cat bot.pid) 2>/dev/null
+chmod +x start.sh
+./start.sh
+
+chmod +x stop.sh
+./stop.sh
+
+powershell -ExecutionPolicy Bypass -File .\sync_to_server.ps1
+
+
+rm -rf venv .venv
