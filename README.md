@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="logo.jpeg" alt="CLEAN BOT logo" width="200" />
+
 # 🧹 CLEAN BOT
 
 ### منظف صفحات المانجا بالذكاء الاصطناعي — AI Manga Panel Cleaner
