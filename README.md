@@ -45,7 +45,7 @@
 - 👁️ فحص تلقائي للطلبات المكتملة كل 10 ثوانٍ وتسليم خاص
 - 🗑️ تنظيف تلقائي للملفات المنتهية
 - 🐳 دعم Docker (معالج + كارت شاشة)
-- 📜 ملف `New Text Document.txt` فيه كل أوامر التشغيل مرتبة + `notes/` لدليل التجهيز
+- 📜 ملف `New Text Document.txt` فيه كل أوامر التشغيل مرتبة
 
 ### 🧩 المعمارية
 
@@ -91,7 +91,6 @@ clean-bot/
 ├── start.sh / stop.sh   # تشغيل وإيقاف
 ├── sync_to_server.ps1   # النشر على السيرفر
 ├── New Text Document.txt# دفتر أوامر التشغيل
-├── notes/               # أدلة وشروحات
 ├── .env.example         # قالب المتغيرات
 └── requirements.txt
 ```
@@ -126,7 +125,7 @@ clean-bot/
 - 👁️ 10s polling for completed jobs with DM delivery
 - 🗑️ Automatic expiry cleanup
 - 🐳 Docker support (CPU + GPU)
-- 📜 `New Text Document.txt` runbook + `notes/` guides
+- 📜 `New Text Document.txt` runbook
 
 ### 🧩 Architecture
 
@@ -172,7 +171,6 @@ clean-bot/
 ├── start.sh / stop.sh   # Start & stop
 ├── sync_to_server.ps1   # Server deploy
 ├── New Text Document.txt# Runbook
-├── notes/               # Guides
 ├── .env.example         # Env template
 └── requirements.txt
 ```
