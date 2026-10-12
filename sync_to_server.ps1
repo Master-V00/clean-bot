@@ -2,9 +2,9 @@
 # Usage: .\sync_to_server.ps1
 
 $SERVER = "YOUR_SERVER_IP"
-$PORT = "54978"
+$PORT = ""
 $REMOTE_PATH = "/workspace/Clean bot"
-$LOCAL_PATH = "H:\Clean bot"
+$LOCAL_PATH = ""
 
 # Files/folders to EXCLUDE from sync
 $EXCLUDE_LIST = @(
@@ -16,7 +16,7 @@ $EXCLUDE_LIST = @(
     "temp_chapters",
     "output",
     "weights",
-    "H:\Clean bot\app\services\models",
+    ".\app\services\models",
     "app/vendor",
     "app/__pycache__",
     "app/data",
